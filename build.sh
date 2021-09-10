@@ -1,0 +1,1 @@
+echo docker run --name=$1 -p 172.16.23.130:$2:$2 -v $3 -d -i -t fastapi:v2 /miniconda3/bin/gunicorn --chdir /code main:app -b 0.0.0.0:$2 -w 16 -k uvicorn.workers.UvicornWorker --reload

@@ -25,7 +25,7 @@ class UnicornException(Exception):
         self.data = None
 
 
-def resp_200(*, data: Union[list, dict, str] = None, message: str = "Success") -> Response:
+def resp_200(*, data: Union[list, dict, str] = None, message: str = "Success", **kwargs) -> Response:
     """resp_200方法用于200(请求成功)，服务器已成功处理了请求。 通常，这表示服务器提供了请求的网页
 
         Parameters
@@ -42,6 +42,24 @@ def resp_200(*, data: Union[list, dict, str] = None, message: str = "Success") -
             'code': 200,
             'message': message,
             'data': data,
+            **kwargs
+        })
+    )
+
+
+def resp_201(**kwargs) -> Response:
+    """resp_201方法用于200(请求成功)，服务器已成功处理了请求。 通常，这表示服务器提供了请求的网页
+        这个函数可以自定义返回内容
+        Parameters
+        ----------
+
+        Returns
+        ----------
+        """
+    return JSONResponse(
+        status_code=status.HTTP_200_OK,
+        content=jsonable_encoder({
+            **kwargs
         })
     )
 

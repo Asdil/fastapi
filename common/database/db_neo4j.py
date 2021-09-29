@@ -1,24 +1,14 @@
-# -*- coding: utf-8 -*-
-"""
--------------------------------------------------
-   File Name：     neo4j
-   Description :
-   Author :       jpl
-   date：          2021/8/16
--------------------------------------------------
-   Change Activity:
-                   2021/8/16:
--------------------------------------------------
-"""
-__author__ = 'Asdil'
+import uuid
+from py2neo import Graph, Relationship, Node
 from neo4j import GraphDatabase
 
 
 class Neo4j:
     """
-    Neo4j类用于连接执行neo4j相关命令
+    Neo4j类用于
     """
-    def __init__(self, url, user, password, database):
+
+    def __init__(self, url, user, password, database=None):
         """__init__(self):方法用于
 
         Parameters
@@ -35,7 +25,71 @@ class Neo4j:
         ----------
         """
         self._driver = GraphDatabase.driver(url, auth=(user, password))
+        self._driver2 = Graph(url, auth=(user, password), name=database)
         self.database = database
+
+    def create_node(self, labels, parameters, add_tag=False, add_uid=False):
+        """create_node方法用于
+
+        Parameters
+        ----------
+        labels: list
+            标签列表
+        parameters: dict
+            参数字典
+        add_tag: bool
+            是否添加tag
+        add_uid: bool
+            是否添加uid
+        Returns
+        ----------
+        """
+        if add_tag:
+            parameters['tag'] = uuid.uuid1()
+        node = Node(*labels, **parameters)
+        self._driver2.create(node)
+        if add_uid:
+            uid = node.identity
+            parameters['uid'] = uid
+            node.update(**parameters)
+            self._driver2.push(node)
+        return node
+
+    def link(self, nodes, relations=None):
+        """link方法用于
+
+        Parameters
+        ----------
+        nodes : py2neo node list
+            py2neo node列表
+        relations: list or None
+            属性列表
+
+        Returns
+        ----------
+        """
+
+        for i in range(len(nodes) - 1):
+            try:
+                r = relations.pop(0)
+            except:
+                r = ' '
+            self._driver2.create(Relationship(nodes[i], r, nodes[i + 1]))
+
+    def is_node(self, node):
+        """is_node方法用于
+
+        Parameters
+        ----------
+        node : object
+            节点对象或者是其它的
+
+        Returns
+        ----------
+        """
+        if node is Node:
+            return True
+        return False
 
     def close(self):
         """close方法用于关闭连接
@@ -98,4 +152,3 @@ class Neo4j:
                 else:
                     session.write_transaction(self._cypher_run, cypher=cypher, rtype=rtype)  # 写操作
         return result
-

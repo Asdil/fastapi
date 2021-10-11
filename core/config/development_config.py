@@ -11,5 +11,3 @@
 -------------------------------------------------
 """
 __author__ = 'Asdil'
-from typing import Union, Optional
-from pydantic import BaseSettings

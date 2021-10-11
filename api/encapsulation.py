@@ -12,8 +12,7 @@
 """
 __author__ = 'Asdil'
 from fastapi import APIRouter, Request
-from common.args import v1_args
-from common import logger
+from common import *
 from api import pipeline_v1
 # 子路由
 sub_router = APIRouter()

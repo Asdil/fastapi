@@ -77,7 +77,7 @@ def register_exception(app: FastAPI) -> None:
             status_code=exc.code,
             content={
                 "code": exc.code,
-                "data": None,
+                # "data": None,
                 "message": exc.message,
             },
         )

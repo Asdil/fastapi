@@ -22,7 +22,7 @@ class UnicornException(Exception):
     def __init__(self, code: int, message: str):
         self.code = code
         self.message = message
-        self.data = None
+        # self.data = None
 
 
 def resp_200(*, data: Union[list, dict, str] = None, message: str = "Success", **kwargs) -> Response:
@@ -48,10 +48,12 @@ def resp_200(*, data: Union[list, dict, str] = None, message: str = "Success", *
 
 
 def resp_201(**kwargs) -> Response:
-    """resp_201方法用于200(请求成功)，服务器已成功处理了请求。 通常，这表示服务器提供了请求的网页
-        这个函数可以自定义返回内容
+    """resp_200方法用于200(请求成功)，服务器已成功处理了请求。 通常，这表示服务器提供了请求的网页
+
         Parameters
         ----------
+        data : list or dict or str
+            返回的数据
 
         Returns
         ----------
@@ -64,7 +66,7 @@ def resp_201(**kwargs) -> Response:
     )
 
 
-def resp_500(message):
+def resp_500(message: str) -> UnicornException:
     """resp_500方法用于服务器遇到错误，无法完成请求
 
         Parameters
@@ -78,7 +80,7 @@ def resp_500(message):
     return UnicornException(500, message)
 
 
-def resp_400(message):
+def resp_400(message: str) -> UnicornException:
     """resp_400方法用于内部验证数据错误
 
         Parameters

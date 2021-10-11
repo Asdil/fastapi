@@ -15,4 +15,4 @@ from fastapi import APIRouter
 from api.encapsulation import sub_router
 router = APIRouter()
 
-router.include_router(sub_router, tags=["hello world 接口"])
+router.include_router(sub_router, tags=["接口服务"])

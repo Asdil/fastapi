@@ -127,13 +127,30 @@ class Mysql:
         conn.commit()
         conn.close()
 
+    def get_cursor(self):
+        """get_cursor方法用于获取一个游标
+        """
+        conn = self.pool.connection(shareable=False)
+        cursor = conn.cursor()
+        return conn, cursor
+
 
 def optimize_expression(sql, params):
     """optimize_expression方法用于优化sql表达式
     使用方法:
-        sql = "select * from table1 where age=%s and name in (%s)"
-        params = [10, ['Tom', 'Jim']]
-        sql, params = optimize_expression(sql, params)
+    type1:
+        sql = 'update test set age=%s where name in (%s)'
+        sql, parm = optimize_expression(sql, [2, ['Alice', 'Bob']])
+        mysql.excute(sql, parm)
+    type2:
+        sql = 'insert into test value(%s)'
+        sql, parm = optimize_expression(sql, [['Tom', 2]])
+        mysql.excute(sql, parm)
+    type3:
+        sql = 'insert into test values %s'
+        sql, parm = optimize_expression(sql, [['Jack', 2], ['San', 3]])
+        mysql.excute(sql, parm)
+
     Parameters
     ----------
     sql : str
@@ -145,12 +162,21 @@ def optimize_expression(sql, params):
     """
     new_params = []
     codes = []
-    for param in params:
-        if isinstance(param, list):
-            new_params.extend(list(map(str, param)))
-            codes.append(','.join(['%s']*len(param)))
-        else:
-            new_params.append(param)
-            codes.append('%s')
+    if 'values' in sql.lower():
+        for param in params:
+            new_params.extend(param)
+            tmp = ','.join(['%s'] * len(param))
+            tmp = f'({tmp})'
+            codes.append(tmp)
+        codes = [','.join(codes)]
+
+    else:
+        for param in params:
+            if isinstance(param, list):
+                new_params.extend(list(map(str, param)))
+                codes.append(','.join(['%s'] * len(param)))
+            else:
+                new_params.append(param)
+                codes.append('%s')
     sql = sql % tuple(codes)
-    return sql, new_params
+    return sql, tuple(new_params)

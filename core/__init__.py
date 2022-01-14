@@ -11,5 +11,5 @@
 -------------------------------------------------
 """
 __author__ = 'Asdil'
-# from core.config import development_config as conf
-from core.config import production_config as conf
+from core.config import development_config as conf
+# from core.config import production_config as conf

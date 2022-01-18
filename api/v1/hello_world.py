@@ -29,9 +29,11 @@ def pipeline_v1(args, host):
     ----------
     """
     logger.info(f'host:{host} 输入的文字是:{args}')
-    data1 = args.data1
-    data2 = args.data2
-    data3 = args.data3
-    return response_code.resp_200(data=[data1, data2, data3])
+    data = args.data
+    try:
+        assert 1 == 2
+    except Exception:
+        return response_code.resp_500(data=repr(Exception))
+    return response_code.resp_200(data=data)
 
 

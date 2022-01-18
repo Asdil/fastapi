@@ -69,9 +69,7 @@ async def pickle_schedule():
 def del_cpu_scanner_job(args:comm_args.Args_del_schedule, request: Request):
     client_host = f"{request.client.host}:{request.client.port}"  # 请求地址 port:host
     logger.info(f'host:{client_host} 请求: args{args}')
-
     Schedule.remove_job(args.job_id)
-
     logger.info(f"删除定时任务: id = {args.job_id}")
 
     return response_code.resp_200(data={"job_id": args.job_id})

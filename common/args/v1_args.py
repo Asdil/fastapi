@@ -19,6 +19,4 @@ class Args_v1(BaseModel):
     """
     Args_v1类用于api v1的所有参数
     """
-    data1: Optional[str] = None
-    data2: float
-    data3: Union[str, float]
+    data: Optional[str] = None

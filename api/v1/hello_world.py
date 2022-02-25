@@ -30,10 +30,10 @@ def pipeline_v1(args, host):
     """
     logger.info(f'host:{host} 输入的文字是:{args}')
     data = args.data
-    try:
-        assert 1 == 2
-    except Exception:
-        return response_code.resp_500(data=repr(Exception))
+    # try:
+    #     assert 1 == 2
+    # except Exception:
+    #     return response_code.resp_500(data=repr(Exception))
     return response_code.resp_200(data=data)
 
 

@@ -25,6 +25,12 @@ from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 sub_router = APIRouter()
 Schedule = None
 
+# kafka模块
+# import asyncio
+# @sub_router.on_event('startup')
+# async def test():
+#     asyncio.create_task(main())
+
 
 @sub_router.on_event("startup")
 async def load_schedule_or_create_blank():

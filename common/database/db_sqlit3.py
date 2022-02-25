@@ -15,40 +15,91 @@ import sqlite3
 from core import conf
 
 
-class Sqlit3():
+class Sqlit3:
     """
     Sqlit3类用于存储临时数据
     """
     def __init__(self):
         """__init__(self):方法用于
         """
-        self.drive = sqlite3.connect(conf.TEMP_DB)
+        self.drive = sqlite3.connect(conf.TEMP_DB, check_same_thread=False)
 
-    def select(self, sql):
-        """excute方法用于
+    def close(self):
+        """close方法用于关闭数据库连接
+        """
+        self.drive.close()
+
+    def select_all(self, sql, param=None):
+        """excute方法用于查询数据
 
         Parameters
         ----------
         sql : str
             sql查询语句
-
+        param: list or tuple or None
+            查询参数
         Returns
         ----------
         """
-        ret = self.drive.execute(sql)
-        ret = ret.fetchall()
+        cursor = self.drive.cursor()
+        if param is None:
+            cursor.execute(sql)
+        else:
+            cursor.execute(sql, param)
+        ret = cursor.fetchall()
+        cursor.close()
         return ret
 
-    def excute(self, sql):
-        """excute方法用于
+    def select_one(self, sql, param=None):
+        """excute方法用于查询数据
+
+        Parameters
+        ----------
+        sql : str
+            sql查询语句
+        param: list or tuple or None
+            查询参数
+        Returns
+        ----------
+        """
+        cursor = self.drive.cursor()
+        if param is None:
+            cursor.execute(sql)
+        else:
+            cursor.execute(sql, param)
+        ret = cursor.fetchone()
+        cursor.close()
+        return ret
+
+    def excute(self, sql, param=None):
+        """excute方法用于查询数据库
 
         Parameters
         ----------
         sql: str
             sql语句
-
+        param: list or tuple or None
+            查询参数
         Returns
         ----------
         """
-        self.drive.execute(sql)
-        self.drive.commit()
+        cursor = self.drive.cursor()
+        try:
+            if param is None:
+                cursor.execute(sql)
+            else:
+                if type(param) is list:
+                    cursor.executemany(sql, param)
+                else:
+                    cursor.execute(sql, param)
+            count = self.drive.total_changes
+            self.drive.commit()
+            cursor.close()
+        except Exception as e:
+            print(e)
+            cursor.close()
+            return False
+        if count > 0:
+            return True
+        else:
+            return False

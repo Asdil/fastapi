@@ -11,5 +11,10 @@
 -------------------------------------------------
 """
 __author__ = 'Asdil'
-from core.config import development_config as conf
-# from core.config import production_config as conf
+from core.config import env_config
+# 根据环境来判断选择的参数
+if env_config.DEBUG:
+    from core.config import development_config as conf
+else:
+    from core.config import production_config as conf
+

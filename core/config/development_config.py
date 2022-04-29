@@ -19,4 +19,12 @@ TITLE: str = "FastAPI项目文档"
 DESCRIPTION: str = "这是一个FastAPI标准模板"
 
 BASE_PATH: str = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-TEMP_DB: str = os.path.join(BASE_PATH, 'temp/temp.db')
+TEMP_DB: str = os.path.join(BASE_PATH, 'local_db/sqlite3.db')
+
+ADD_SCHEDULER = True  # 是否添加api.scheduler定时任务模块
+
+# 初始化定时任务使用的配置
+SQL_ITE1 = 'update start_up set flag=TRUE where id=1 and flag=FALSE;'
+SQL_ITE2 = 'select flag from start_up where id=1;'
+SQL_ITE3 = 'update start_up set flag=FALSE where id=1;'
+

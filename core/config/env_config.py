@@ -1,17 +1,16 @@
 # -*- coding: utf-8 -*-
 """
 -------------------------------------------------
-   File Name：     __init__
+   File Name：     env_config
    Description :
-   Author :       jpl
-   date：          2021/8/16
+   Author :       asdil
+   date：          2022/4/29
 -------------------------------------------------
    Change Activity:
-                   2021/8/16:
+                   2022/4/29:
 -------------------------------------------------
 """
 __author__ = 'Asdil'
-from .logger import logger
-from .args import comm_args
-from .database.db_sqlit3 import Sqlit3
-sqlite3_db = Sqlit3()
+import os
+# 判断是生产模式还是开发模式
+DEBUG: bool = True

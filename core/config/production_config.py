@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 -------------------------------------------------
-   File Name：     production_config
-   Description :  用于开发环境参数配置
+   File Name：     development_config
+   Description :  用于生产环境参数配置
    Author :       jpl
    date：          2021/8/16
 -------------------------------------------------
@@ -12,13 +12,13 @@
 """
 __author__ = 'Asdil'
 import os
-
 # 生产模式配置
-DEBUG: bool = True
+DEBUG: bool = False
 # 项目文档
 TITLE: str = "FastAPI项目文档"
 DESCRIPTION: str = "这是一个FastAPI标准模板"
 
 BASE_PATH: str = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+TEMP_DB: str = os.path.join(BASE_PATH, 'local_db/sqlite3.db')
 
-TEMP_DB: str = os.path.join(BASE_PATH, 'temp/temp.db')
+ADD_SCHEDULER = True  # 是否添加api.scheduler定时任务模块

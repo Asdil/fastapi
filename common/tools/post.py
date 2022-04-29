@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
 """
 -------------------------------------------------
-   File Name：     call
-   Description :
+   File Name：     post
+   Description :  用于post接口或者get请求
    Author :       asdil
-   date：          2022/2/25
+   date：          2022/4/29
 -------------------------------------------------
    Change Activity:
-                   2022/2/25:
+                   2022/4/29:
 -------------------------------------------------
 """
 __author__ = 'Asdil'
 import json
+import requests
 import http.client
 
 
@@ -92,3 +93,56 @@ def get(url, data=None, headers=None, decode='utf-8'):
     data = res.read()
     data = data.decode(decode)
     return data, res.status
+
+
+def post2(url, data, header=None):
+    """post方法用于发送post
+    Parameters
+    ----------
+    url : str
+        url地址
+    data : dict
+        post body数据
+    header : dict
+        post header 数据
+    Returns
+    ----------
+    """
+    header = header if header else {'Content-Type': 'application/json'}
+    ret = requests.post(url=url,
+                        data=json.dumps(data),
+                        headers=header)
+    status = ret.status_code
+    ret = ret.json()
+    return ret, status
+
+
+def get2(url, headers=None, data=None):
+    """get方法用于get数据
+    Parameters
+    ----------
+    url : str
+        url地址
+    data : dict or None
+        post data数据
+    headers : dict or None
+        post header 数据
+    Returns
+    ----------
+    """
+    if data is None:
+        data = {}
+    if headers is None:
+        headers = {}
+    response = requests.request("GET", url, headers=headers, data=data)
+    status = response.status_code
+    ret = json.loads(response.text)
+    return ret, status
+
+
+# if __name__ == '__main__':
+#     url = 'http://0.0.0.0:8100/hello_world'
+#     data = {'data': 'asdil'}
+#     a,b = post2(url, data)
+#     print(a)
+#     print(b)

@@ -68,6 +68,11 @@ class Mysql:
                 database=database,
                 charset='utf8')
 
+    def close_all(self):
+        """close_all方法用于关闭数据库连接
+        """
+        self.pool.close()
+
     def select_one(self, sql, args=None):
         """select_one方法用于查询一条数据
 
@@ -136,17 +141,22 @@ class Mysql:
 
 
 def optimize_expression(sql, params):
-    """optimize_expression方法用于优化sql表达式
+    """optimize_expression方法用于优化sql表达式,注意外层一定要是list
     使用方法:
     type1:
+        sql = 'select taskid from jpl_schedule_new where id in (%s) and groupid in (%s)'
+        sql, parm = optimize_expression(sql, [(1,2,3), ('AX001', 'AX002')])
+        or
+        sql, parm = optimize_expression(sql, [[1,2,3], [AX001', 'AX002']])
+    type2:
         sql = 'update test set age=%s where name in (%s)'
         sql, parm = optimize_expression(sql, [2, ['Alice', 'Bob']])
         mysql.excute(sql, parm)
-    type2:
+    type3:
         sql = 'insert into test value(%s)'
         sql, parm = optimize_expression(sql, [['Tom', 2]])
         mysql.excute(sql, parm)
-    type3:
+    type4:
         sql = 'insert into test values %s'
         sql, parm = optimize_expression(sql, [['Jack', 2], ['San', 3]])
         mysql.excute(sql, parm)
@@ -155,7 +165,8 @@ def optimize_expression(sql, params):
     ----------
     sql : str
         sql语句
-    params ： 参数列表
+    params : list
+        参数列表
 
     Returns
     ----------
@@ -172,7 +183,7 @@ def optimize_expression(sql, params):
 
     else:
         for param in params:
-            if isinstance(param, list):
+            if type(param) in {list, tuple}:
                 new_params.extend(list(map(str, param)))
                 codes.append(','.join(['%s'] * len(param)))
             else:

@@ -2,7 +2,7 @@
 """
 -------------------------------------------------
    File Name：     comm_args
-   Description :
+   Description :  此处定义参数, 如果需要测试请使用测试参数
    Author :       asdil
    date：          2022/1/14
 -------------------------------------------------
@@ -15,8 +15,15 @@ from pydantic import BaseModel
 from typing import Union, Optional
 
 
-class Args_del_schedule(BaseModel):
+class Args_demo(BaseModel):
     """
-    Args_v1类用于api v1的所有参数
+    Args_demo类用于参数校验
+    """
+    data: str
+
+
+class Args_Del(BaseModel):
+    """
+    Args_Deljob 用于删除定时任务
     """
     job_id: str

@@ -11,8 +11,13 @@
 -------------------------------------------------
 """
 __author__ = 'Asdil'
+# import json
+# from core import conf
+# from common import logger
+# from common import sqlite3_db
 # from aiokafka import AIOKafkaConsumer
-
+#
+#
 # async def main():
 #     """monitor方法用于监听kafka消息执行操作
 #     """
@@ -39,3 +44,9 @@ __author__ = 'Asdil'
 #         await consumer.stop()
 #         logger.info('kafka关闭！')
 #     return 0
+#
+#
+# # 用法
+# # @sub_router.on_event('startup')
+# # async def start_kafka():
+# #     asyncio.create_task(main())

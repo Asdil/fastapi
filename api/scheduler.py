@@ -20,7 +20,7 @@ from fastapi import APIRouter, Request
 from schemas.response import response_code
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
-from common.tools import global_var
+
 
 
 # 子路由2
@@ -28,12 +28,12 @@ scheduler_router = APIRouter()
 Schedule = None
 
 
-@scheduler_router.on_event("startup")
-async def set_schedule_avaliable():
-    """配合load_schedule_or_create_blank使用, 初始化start_up表可用"""
-    sleep = random.uniform(0, 1)
-    await asyncio.sleep(sleep)
-    sqlite3_db.excute(conf.SQL_ITE1)  # 初始化可开工任务
+# @scheduler_router.on_event("startup")
+# async def set_schedule_avaliable():
+#     """配合load_schedule_or_create_blank使用, 初始化start_up表可用"""
+#     sleep = random.uniform(0, 1)
+#     await asyncio.sleep(sleep)
+
 
 
 @scheduler_router.on_event("startup")
@@ -71,7 +71,7 @@ async def load_schedule_or_create_blank():
 #     return response_code.resp_200(data={"job_id": job_id})
 
 @scheduler_router.post("/del_schedule_job", summary="删除指定定时任务", description='删除指定定时任务', tags=["SCHEDULER"])
-def del_cpu_scanner_job(args: comm_args.Args_Del, request: Request):
+def del_cpu_scanner_job(args: args.Args_Del, request: Request):
     client_host = f"{request.client.host}:{request.client.port}"  # 请求地址 port:host
     logger.info(f'host:{client_host} 请求: args{args}')
     Schedule.remove_job(args.job_id)
@@ -85,6 +85,7 @@ async def pickle_schedule():
     """
     方法用于在项目结束时关闭定时任务模块
     """
+    sqlite3_db.excute(conf.SQL_ITE1)  # 初始化可开工任务
     global Schedule
     Schedule.shutdown()
     logger.info("关闭定时任务模块！")

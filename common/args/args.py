@@ -15,15 +15,15 @@ from pydantic import BaseModel
 from typing import Union, Optional
 
 
-class Args_demo(BaseModel):
+class Args1(BaseModel):
     """
-    Args_demo类用于参数校验
+    Args1 类用于示列子
     """
     data: str
 
 
-class Args_Del(BaseModel):
+class Args2(BaseModel):
     """
-    Args_Deljob 用于删除定时任务
+    Args2 用于使用job_id删除apscheduler指定定时任务
     """
     job_id: str

@@ -71,7 +71,7 @@ async def load_schedule_or_create_blank():
 #     return response_code.resp_200(data={"job_id": job_id})
 
 @scheduler_router.post("/del_schedule_job", summary="删除指定定时任务", description='删除指定定时任务', tags=["SCHEDULER"])
-def del_cpu_scanner_job(args: args.Args_Del, request: Request):
+def del_cpu_scanner_job(args: args.ArgsDelJobID, request: Request):
     client_host = f"{request.client.host}:{request.client.port}"  # 请求地址 port:host
     logger.info(f'host:{client_host} 请求: args{args}')
     Schedule.remove_job(args.job_id)

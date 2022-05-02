@@ -23,7 +23,7 @@ sub_router = APIRouter()
 
 
 @sub_router.post("/hello_world", summary="简单的函数调用", description='简单的函数调用')
-async def hello_world(args: args.Args_demo, request: Request):
+async def hello_world(args: args.Args1, request: Request):
     client_host = f"{request.client.host}:{request.client.port}"   # 请求地址 port:host
     logger.info(f'host:{client_host} 请求: args{args}')
     ret = pipeline_v1(args, client_host)

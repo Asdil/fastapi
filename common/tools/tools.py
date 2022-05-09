@@ -11,8 +11,10 @@
 -------------------------------------------------
 """
 __author__ = 'Asdil'
+import os
 import ast
 import math
+import base64
 import datetime
 from dateutil.parser import parse
 
@@ -306,3 +308,78 @@ def add_datetime(days=None, hours=None, minutes=None, seconds=None, weeks=None):
     if weeks is not None:
         ret += datetime.timedelta(weeks=weeks)
     return ret
+
+
+def base_encrypt(data):
+    """base_encrypt方法用于base64转码
+
+    Parameters
+    ----------
+    data : str
+        需要转码的字符串
+    Returns
+    ----------
+    """
+    data = bytes(data, encoding="utf8")
+    encrypt_data = base64.b64encode(data)
+    encrypt_data = str(encrypt_data, encoding="utf8")
+    return encrypt_data
+
+
+def base_decrypt(data):
+    """base_decrypt方法用于
+
+    Parameters
+    ----------
+    data : str
+        转码后字段
+
+    Returns
+    ----------
+    """
+    data = bytes(data, encoding="utf8")
+    decrypt_data = base64.b64decode(data)
+    decrypt_data = str(decrypt_data, encoding="utf8")
+    return decrypt_data
+
+
+def path_join(path1, path2):
+    """path_join方法用于合并两个或多个目录
+
+    Parameters
+    ----------
+    path1 : str
+        主路径
+    path2 : str or list
+        子路径
+    Returns
+    ----------
+    """
+    assert isinstance(path1, str)
+    if isinstance(path2, list):
+        path2 = os.sep.join(path2)
+    if path1[-1] != os.sep:
+        path1 += os.sep
+    if path2[0] == os.sep:
+        path2 = path2[1:]
+    return path1 + path2
+
+
+def is_exist(path):
+    """is_exist方法用于检测文件是否存在
+
+    Parameters
+    ----------
+    path : str
+        文件路径
+
+    Returns
+    ----------
+    """
+    return os.path.exists(path)
+
+
+def get_pid():
+    """get_pid方法用于当前进程id
+    """
+    return os.getpid()

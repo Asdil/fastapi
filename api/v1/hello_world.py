@@ -12,6 +12,7 @@
 """
 __author__ = 'Asdil'
 from common import logger
+from common.args.args import *
 from schemas.response import response_code
 
 
@@ -20,7 +21,7 @@ def pipeline_v1(args, host):
 
     Parameters
     ----------
-    args: pydantic object
+    args: Args1
         参数包
     host: str
         请求参数地址

@@ -101,7 +101,7 @@ class Pyneo4j:
         if labels:
             if type(labels) is str:
                 labels = [labels]
-            node.update_labels(*labels)
+            node.update_labels(labels)
         if parameters:
             node.update(**parameters)
         self.driver.push(node)

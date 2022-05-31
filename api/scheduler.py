@@ -61,7 +61,7 @@ async def load_schedule_or_create_blank():
 
 
 # @sub_router2.post("/set_schedule_job", summary="用于开启定时任务", description='用于开启定时任务', tags=["SCHEDULER"])
-# async def set_cpu_scanner_job(args: args.Args_None, request: Request):
+# async def set_cpu_scanner_job(args: args.Args1, request: Request):
 #     random_suffix = uuid.uuid1()
 #     job_id = str(random_suffix)
 #     job = Schedule.add_job('这里填写任务函数', 'interval', seconds=5, id=job_id, args=[job_id])
@@ -71,7 +71,7 @@ async def load_schedule_or_create_blank():
 #     return response_code.resp_200(data={"job_id": job_id})
 
 @scheduler_router.post("/del_schedule_job", summary="删除指定定时任务", description='删除指定定时任务', tags=["SCHEDULER"])
-async def del_cpu_scanner_job(args: args.ArgsJ2, request: Request):
+async def del_cpu_scanner_job(args: args.Args2, request: Request):
     client_host = f"{request.client.host}:{request.client.port}"  # 请求地址 port:host
     logger.info(f'host:{client_host} 请求: args{args}')
     Schedule.remove_job(args.job_id)
@@ -85,7 +85,6 @@ async def pickle_schedule():
     """
     方法用于在项目结束时关闭定时任务模块
     """
-    sqlite3_db.excute(conf.SQL_LITE1)  # 初始化可开工任务
     global Schedule
     Schedule.shutdown()
     logger.info("关闭定时任务模块！")

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 -------------------------------------------------
-   File Name：     test
-   Description :
+   File Name：     recover
+   Description :  这个是初始化定时任务模块后端数据库
    Author :       asdil
    date：          2022/5/4
 -------------------------------------------------

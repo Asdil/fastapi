@@ -17,9 +17,9 @@ from typing import Union, Optional
 
 class Args1(BaseModel):
     """
-    Args1 类用于示列子
+    Args1 类用于示空白参数
     """
-    data: str
+    data: Optional[str] = None
 
 
 class Args2(BaseModel):

@@ -11,13 +11,16 @@
 -------------------------------------------------
 """
 __author__ = 'Asdil'
+
 import traceback
+from core import conf
+from router.router import router
+from fastapi.responses import JSONResponse
 from fastapi import FastAPI, Request, Response
 from starlette.middleware.cors import CORSMiddleware
-from core import conf
 from schemas.response.response_code import UnicornException
-from fastapi.responses import JSONResponse
-from router.router import router
+
+
 
 
 def create_app() -> FastAPI:
@@ -81,3 +84,4 @@ def register_exception(app: FastAPI) -> None:
                 "message": exc.message,
             },
         )
+

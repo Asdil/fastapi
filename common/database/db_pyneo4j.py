@@ -137,7 +137,7 @@ class Pyneo4j:
             cycler = f'Match (p) where p.uid={uid} Delete p;'
             self.driver.run(cycler)
 
-    def create_relationship(self, node1, node2, label='', parameters={}):
+    def create_relationship(self, node1, node2, label='', parameters={}, add_uid=False):
         """create_relationship方法用于
 
         Parameters
@@ -150,6 +150,8 @@ class Pyneo4j:
             节点关系
         parameters: dict or None
             关系属性
+        add_uid: bool
+            是否添加uid
 
         Returns
         ----------
@@ -244,7 +246,7 @@ class Pyneo4j:
                 self.driver.delete(node1)
                 self.driver.delete(node2)
 
-    def update_relationship(self, id=None, label1=[], parameters1={},
+    def update_relationship(self, id=None, uid=None, label1=[], parameters1={},
                             r_label=None, label2=[], parameters2={}, new_r_label=None,
                             new_r_parameters={}):
         """update_relationship方法用于更新关系
@@ -253,6 +255,8 @@ class Pyneo4j:
         ----------
         id: int or None
             关系的id
+        uid: int or None
+            关系的uid
         label1: list or str or None
             节点1的标签集合
         parameters1: dict
@@ -281,9 +285,11 @@ class Pyneo4j:
             label1 = [label1]
         if type(label2) is str:
             label2 = [label2]
-
-        if id:
-            cyper = f'match g=(node1)-[r]->(node2) where id(r)={id} return g'
+        if uid or id:
+            if uid:
+                cyper = f'match g=(node1)-[r]->(node2) where r.uid={uid} return g'
+            else:
+                cyper = f'match g=(node1)-[r]->(node2) where id(r)={id} return g'
             graph = self.driver.evaluate(cyper)
             relationship = graph.relationships[0]
             node1, node2 = graph.nodes

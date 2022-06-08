@@ -16,11 +16,10 @@ import traceback
 from core import conf
 from router.router import router
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, Request, Response
 from starlette.middleware.cors import CORSMiddleware
 from schemas.response.response_code import UnicornException
-
-
 
 
 def create_app() -> FastAPI:
@@ -32,6 +31,22 @@ def create_app() -> FastAPI:
         title=conf.TITLE,
         description=conf.DESCRIPTION,
     )
+    app.mount('/static', StaticFiles(directory='static'),
+              name='static')
+    '''
+    docs修改方法
+    1. vim Lib/site-package/fastapi/openapi/docs.py
+    2. 替换
+    swagger_js_url: str="/static/swagger-ui/swagger-ui-bundle.js",
+    swagger_css_url: str="/static/swagger-ui/swagger-ui.css",
+    swagger_favicon_url: str="/static/swagger-ui/favicon.png",
+    
+    edoc_js_url: str = "/static/redoc/bundles/redoc.standalone.js",
+    redoc_favicon_url: str = "/static/redoc/favicon.png",
+    打开http://127.0.0.1:端口/docs就可以成功加载
+    '''
+
+
     # 其余的一些全局配置可以写在这里 多了可以考虑拆分到其他文件夹
 
     # 跨域设置

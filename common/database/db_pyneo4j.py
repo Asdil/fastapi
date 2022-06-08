@@ -164,18 +164,21 @@ class Pyneo4j:
         """delete_all方法用于删除图数据所有数据,慎用"""
         self.driver.delete_all()
 
-    def run(self, cyper):
+    def run(self, cyper, parameters=None):
         """run方法用于运行cyper
+        eg: cyper = 'match (p1)-[r]->(p2) where labels(p1)=$l1 return p1'
+            neo4j_db.run(cyper, {'l1': ['aa']})
 
         Parameters
         ----------
         cyper : str
             cyper 语句
+        parameters: dict or None
+            参数列表
         Returns
         ----------
         """
-        cyper = cyper.lower()
-        ret = self.driver.run(cyper)
+        ret = self.driver.run(cyper, parameters)
         return ret
 
     def run_one(self, cyper):

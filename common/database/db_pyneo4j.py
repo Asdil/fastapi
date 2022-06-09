@@ -67,10 +67,8 @@ class Pyneo4j:
             self.driver.push(node)
         return node
 
-    def update_node(self, node, labels=None, parameters={},
-                    cover_lables=False,
-                    cover_parameters={},
-                    add_uid=False):
+    def update_node(self, node, labels=None, parameters={}, cover_lables=False,
+                    cover_parameters=False, add_uid=False):
         """update_node方法用于
 
         Parameters
@@ -79,7 +77,7 @@ class Pyneo4j:
             节点对象
         labels : list or None
             标签集合
-        parameters: dict or None
+        parameters: dict
             参数字典
         cover_parameters: bool
             是否删除原有的属性，只保留更新的labels, parameters
@@ -91,6 +89,8 @@ class Pyneo4j:
         Returns
         ----------
         """
+        if parameters is None:
+            parameters = {}
         if cover_parameters:
             for key in node.keys():
                 del node[key]
@@ -148,7 +148,7 @@ class Pyneo4j:
             节点2
         label: str
             节点关系
-        parameters: dict or None
+        parameters: dict
             关系属性
         add_uid: bool
             是否添加uid
@@ -158,6 +158,10 @@ class Pyneo4j:
         """
         relation = Relationship(node1, label, node2, **parameters)
         self.driver.create(relation)
+        if add_uid:
+            parameters = {'uid': relation.identity}
+            relation.update(**parameters)
+        self.driver.push(relation)
         return relation
 
     def delete_all(self):
@@ -181,19 +185,19 @@ class Pyneo4j:
         ret = self.driver.run(cyper, parameters)
         return ret
 
-    def run_one(self, cyper):
+    def run_one(self, cyper, parameters=None):
         """run_one(self):方法用于运行cyper返回第一个数据
 
         Parameters
         ----------
         cyper : str
             cyper 语句
-
+        parameters: dict or None
+            参数列表
         Returns
         ----------
         """
-        cyper = cyper.lower()
-        ret = self.driver.evaluate(cyper)
+        ret = self.driver.evaluate(cyper, parameters)
         return ret
 
     def get_by_id(self, uid):
@@ -211,8 +215,7 @@ class Pyneo4j:
         node = self.driver.evaluate(cyper)
         return node
 
-    def delete_relationship(self, label1=[],
-                            parameters1={}, r_label=None,
+    def delete_relationship(self, label1=[], parameters1={}, r_label=None,
                             label2=[], parameters2={}, delete_node=False):
         """delete_relationship方法用于删除关系或者关系和节点
         db.delete_relationship(label1=['xxx'],
@@ -229,8 +232,10 @@ class Pyneo4j:
             节点2的标签集合
         parameters2: dict
             节点2的属性集合
-        r_label:
+        r_label: str
             关系的标签
+        delete_node: bool
+            是否同时删除节点，需要正没有其他的关系
 
         Returns
         ----------
@@ -244,7 +249,6 @@ class Pyneo4j:
         relationships = self.relationship_matcher.match([node1, node2], r_type=r_label)
         for relationship in relationships.all():
             self.driver.separate(relationship)
-
             if delete_node:
                 self.driver.delete(node1)
                 self.driver.delete(node2)
@@ -272,7 +276,7 @@ class Pyneo4j:
             关系的标签
         new_r_label: str or None
             新的关系标签
-        new_r_parameters: dict or None
+        new_r_parameters: dict
             新的关系属性
 
         Returns

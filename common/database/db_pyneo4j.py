@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 -------------------------------------------------
-   File Name：     pp
+   File Name：     db_pyneo4j
    Description :
    Author :       asdil
    date：          2022/2/28
@@ -215,7 +215,7 @@ class Pyneo4j:
         node = self.driver.evaluate(cyper)
         return node
 
-    def delete_relationship(self, label1=[], parameters1={}, r_label=None,
+    def delete_relationship(self, uid=None, id=None, label1=[], parameters1={}, r_label=None,
                             label2=[], parameters2={}, delete_node=False):
         """delete_relationship方法用于删除关系或者关系和节点
         db.delete_relationship(label1=['xxx'],
@@ -224,6 +224,10 @@ class Pyneo4j:
                             delete_node=True)
         Parameters
         ----------
+        uid: int
+            节点uid
+        id: int
+            节点id
         label1: list or str or None
             节点1的标签集合
         parameters1: dict
@@ -240,6 +244,14 @@ class Pyneo4j:
         Returns
         ----------
         """
+        if uid:
+            cycler = f'match ()-[r]->() where r.uid={uid} delete r'
+            self.driver.run(cycler)
+            return
+        if id:
+            cycler = f'match ()-[r]->() where id(r)={uid} delete r'
+            self.driver.run(cycler)
+            return
         if type(label1) is str:
             label1 = [label1]
         if type(label2) is str:

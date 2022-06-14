@@ -11,9 +11,12 @@
 -------------------------------------------------
 """
 __author__ = 'Asdil'
-from core.config import env_config
-# 根据环境来判断选择的参数
-if env_config.DEBUG:
+# docker 生产环境下需要添加语句 --env DEBUG=false
+# pycharm 需要在run->Edit Configuration->Environment->添加;DEBUG=true
+
+import os
+ENV = os.environ
+if ENV.get('DEBUG', 'true') == 'false':
     from core.config import development_config as conf
 else:
     from core.config import production_config as conf

@@ -137,7 +137,7 @@ class Pyneo4j:
             cycler = f'Match (p) where p.uid={uid} Delete p;'
             self.driver.run(cycler)
 
-    def create_relationship(self, node1, node2, label='', parameters={}, add_uid=False):
+    def create_relationship(self, node1, node2, label='to', parameters={}, add_uid=False):
         """create_relationship方法用于
 
         Parameters

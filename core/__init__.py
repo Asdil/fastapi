@@ -17,7 +17,8 @@ __author__ = 'Asdil'
 import os
 ENV = os.environ
 if ENV.get('DEBUG', 'true') == 'false':
-    from core.config import development_config as conf
-else:
     from core.config import production_config as conf
+else:
+    from core.config import development_config as conf
+
 

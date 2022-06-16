@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 -------------------------------------------------
-   File Name：     db_pyneo4j
+   File Name：     pp
    Description :
    Author :       asdil
    date：          2022/2/28
@@ -137,7 +137,7 @@ class Pyneo4j:
             cycler = f'Match (p) where p.uid={uid} Delete p;'
             self.driver.run(cycler)
 
-    def create_relationship(self, node1, node2, label='to', parameters={}, add_uid=False):
+    def create_relationship(self, node1, node2, label='', parameters={}, add_uid=False):
         """create_relationship方法用于
 
         Parameters
@@ -215,7 +215,7 @@ class Pyneo4j:
         node = self.driver.evaluate(cyper)
         return node
 
-    def delete_relationship(self, uid=None, id=None, label1=[], parameters1={}, r_label=None,
+    def delete_relationship(self, label1=[], parameters1={}, r_label=None,
                             label2=[], parameters2={}, delete_node=False):
         """delete_relationship方法用于删除关系或者关系和节点
         db.delete_relationship(label1=['xxx'],
@@ -224,10 +224,6 @@ class Pyneo4j:
                             delete_node=True)
         Parameters
         ----------
-        uid: int
-            节点uid
-        id: int
-            节点id
         label1: list or str or None
             节点1的标签集合
         parameters1: dict
@@ -244,14 +240,6 @@ class Pyneo4j:
         Returns
         ----------
         """
-        if uid:
-            cycler = f'match ()-[r]->() where r.uid={uid} delete r'
-            self.driver.run(cycler)
-            return
-        if id:
-            cycler = f'match ()-[r]->() where id(r)={uid} delete r'
-            self.driver.run(cycler)
-            return
         if type(label1) is str:
             label1 = [label1]
         if type(label2) is str:
@@ -265,13 +253,17 @@ class Pyneo4j:
                 self.driver.delete(node1)
                 self.driver.delete(node2)
 
-    def update_relationship(self, id=None, uid=None, label1=[], parameters1={},
+    def update_relationship(self, node1=None, node2=None, id=None, uid=None, label1=[], parameters1={},
                             r_label=None, label2=[], parameters2={}, new_r_label=None,
                             new_r_parameters={}):
         """update_relationship方法用于更新关系
 
         Parameters
         ----------
+        node1: Node
+            from节点
+        node2: Node
+            to节点
         id: int or None
             关系的id
         uid: int or None
@@ -299,6 +291,19 @@ class Pyneo4j:
                 if key not in d1:
                     d1[key] = d2[key]
             return d1
+        if node1 and node2:
+            relationships = self.relationship_matcher.match([node1, node2], r_type=r_label)
+            for relationship in relationships.all():
+                if new_r_label:
+                    parameters = dict(relationship)
+                    new_r_parameters = combine_dict(new_r_parameters, parameters)
+                    # 删除关系
+                    self.driver.separate(relationship)
+                    self.create_relationship(node1, node2, new_r_label, new_r_parameters)
+                else:
+                    relationship.update(new_r_parameters)
+                    self.driver.push(relationship)
+            return
 
         if type(label1) is str:
             label1 = [label1]

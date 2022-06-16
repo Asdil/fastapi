@@ -11,11 +11,10 @@
 -------------------------------------------------
 """
 __author__ = 'Asdil'
-
 from .args import args
 from .tools import tools
-from .logger import logger
 from .tools import request
+from .logger import logger
 from .database.db_sqlit3 import Sqlit3
 
 sqlite3_db = Sqlit3()

@@ -13,6 +13,7 @@
 __author__ = 'Asdil'
 from typing import Union
 from fastapi import status
+from fastapi import HTTPException
 from fastapi.responses import JSONResponse, Response
 from fastapi.encoders import jsonable_encoder
 
@@ -34,20 +35,20 @@ from fastapi.encoders import jsonable_encoder
 
 class UnicornException(Exception):
     """UnicornException用于异常类,直接抛出异常"""
-    def __init__(self, code: int, message: str):
+    def __init__(self, code: int, detail: str):
         self.code = code
-        self.message = message
+        self.detail = detail
         # self.data = None
 
 
-def resp_200(*, data: Union[list, dict, str] = None, message: str = "Success", **kwargs) -> Response:
+def resp_200(*, data: Union[list, dict, str] = None, detail: str = "Success", **kwargs) -> Response:
     """resp_200方法用于200(请求成功)，服务器已成功处理了请求。 通常，这表示服务器提供了请求的网页
 
         Parameters
         ----------
         data : list or dict or str
             返回的数据
-        message : str
+        detail : str
             提示信息
 
         Returns
@@ -57,7 +58,7 @@ def resp_200(*, data: Union[list, dict, str] = None, message: str = "Success", *
         status_code=status.HTTP_200_OK,
         content=jsonable_encoder({
             'status_code': 200,
-            'message': message,
+            'detail': detail,
             'data': data,
             **kwargs
         })
@@ -83,21 +84,23 @@ def resp_200_udf(**kwargs) -> Response:
     )
 
 
-def resp_fail_udf(message: str) -> UnicornException:
+def resp_fail_udf(status_code, detail: str) -> UnicornException:
     """resp_udf方法用请求失败自定义返回
 
         Parameters
         ----------
-        message : str
+        status_code : int
+            错误代码
+        detail : str
             错误信息
 
         Returns
         ----------
         """
-    return UnicornException(500, message)
+    return UnicornException(status_code, detail)
 
 
-def resp_500(*, data: str = None, message: str = "服务器发生错误，无法判断发出的请求是否成功") -> Response:
+def resp_500(*, data: str = None, detail: str = "服务器发生错误，无法判断发出的请求是否成功") -> Response:
     """resp_500方法用于500错误(服务器端出现问题)，INTERNAL SERVER ERROR 服务器发生错误，用户将无法判断发出的请求是否成功。
 
             Parameters
@@ -114,20 +117,20 @@ def resp_500(*, data: str = None, message: str = "服务器发生错误，无法
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
         content={
             'code': 500,
-            'message': message,
+            'detail': detail,
             'data': data,
         }
     )
 
 
-def resp_400(*, data: str = None, message: str = "用户发出的请求有错误") -> Response:
-    """resp_500方法用于400错误(请求有问题)，用户发出的请求有错误，服务器没有进行新建或修改数据的操作，该操作是幂等的
+def resp_400(*, data: str = None, detail: str = "用户发出的请求有错误") -> Response:
+    """resp_400方法用于400错误(请求有问题)，用户发出的请求有错误，服务器没有进行新建或修改数据的操作，该操作是幂等的
 
             Parameters
             ----------
             data : list or dict or str
                 返回的数据
-            message : str
+            detail : str
                 提示信息
 
             Returns
@@ -137,7 +140,30 @@ def resp_400(*, data: str = None, message: str = "用户发出的请求有错误
         status_code=status.HTTP_400_BAD_REQUEST,
         content={
             'code': 400,
-            'message': message,
+            'detail': detail,
             'data': data,
         }
+    )
+
+
+def http_exception(status_code: int, detail: str, headers: dict = None) -> HTTPException:
+    """http_exception方法用于raise 报错
+
+    Parameters
+    ----------
+    status_code : int
+        错误代码
+    detail : str
+        错误信息
+    headers : dict or None
+        头文件,自定义用的对返回无变化
+
+    Returns
+    ----------
+    HTTPException
+    """
+    return HTTPException(
+        status_code=status_code,
+        detail=detail,
+        headers=headers,
     )

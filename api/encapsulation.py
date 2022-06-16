@@ -11,19 +11,20 @@
 -------------------------------------------------
 """
 __author__ = 'Asdil'
-import uuid
+
 from common import *
-from core import conf
+from fastapi import Depends
 from api import pipeline_v1
 from fastapi import APIRouter, Request
-from schemas.response import response_code
+from api.authentication.jwt_func import verify_token
+
 
 # 子路由
 sub_router = APIRouter()
 
 
 @sub_router.post("/hello_world", summary="简单的函数调用", description='简单的函数调用')
-async def hello_world(args: args.Args1, request: Request):
+async def port_hello_world(args: args.Args1, request: Request): # token: bool = Depends(verify_token) 如果要加token
     client_host = f"{request.client.host}:{request.client.port}"   # 请求地址 port:host
     logger.info(f'host:{client_host} 请求: args{args}')
     ret = pipeline_v1(args, client_host)

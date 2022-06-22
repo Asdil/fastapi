@@ -301,7 +301,7 @@ class Pyneo4j:
                     self.driver.separate(relationship)
                     self.create_relationship(node1, node2, new_r_label, new_r_parameters)
                 else:
-                    relationship.update(new_r_parameters)
+                    relationship.update(**new_r_parameters)
                     self.driver.push(relationship)
             return
 

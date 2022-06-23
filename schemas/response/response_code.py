@@ -66,16 +66,7 @@ def resp_200(*, data: Union[list, dict, str] = None, detail: str = "Success", **
 
 
 def resp_200_udf(**kwargs) -> Response:
-    """resp_200方法用于200(请求成功)，服务器已成功处理了请求。 通常，这表示服务器提供了请求的网页
-
-        Parameters
-        ----------
-        data : list or dict or str
-            返回的数据
-
-        Returns
-        ----------
-        """
+    """resp_200方法用于200(请求成功)，服务器已成功处理了请求。 通常，这表示服务器提供了请求的网页"""
     return JSONResponse(
         status_code=status.HTTP_200_OK,
         content=jsonable_encoder({
@@ -107,7 +98,7 @@ def resp_500(*, data: str = None, detail: str = "服务器发生错误，无法�
             ----------
             data : list or dict or str
                 返回的数据
-            message : str
+            detail : str
                 提示信息
 
             Returns
@@ -116,7 +107,7 @@ def resp_500(*, data: str = None, detail: str = "服务器发生错误，无法�
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
         content={
-            'code': 500,
+            'code': status.HTTP_500_INTERNAL_SERVER_ERROR,
             'detail': detail,
             'data': data,
         }
@@ -139,7 +130,7 @@ def resp_400(*, data: str = None, detail: str = "用户发出的请求有错误"
     return JSONResponse(
         status_code=status.HTTP_400_BAD_REQUEST,
         content={
-            'code': 400,
+            'code': status.HTTP_400_BAD_REQUEST,
             'detail': detail,
             'data': data,
         }

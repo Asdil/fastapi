@@ -24,6 +24,6 @@ class Args1(BaseModel):
 
 class Args2(BaseModel):
     """
-    Args2 用于使用job_id删除apscheduler指定定时任务
+    Args2 用于使用job_id删除 apscheduler 指定定时任务
     """
     job_id: str

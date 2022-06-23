@@ -15,7 +15,7 @@ from py2neo import Graph, Relationship, Node
 from py2neo.matching import RelationshipMatcher, NodeMatcher
 
 
-class Pyneo4j:
+class Py2neo4j:
     """
     Neo4j类用于操作neo4j图数据库
     """
@@ -67,7 +67,7 @@ class Pyneo4j:
             self.driver.push(node)
         return node
 
-    def update_node(self, node, labels=None, parameters={}, cover_lables=False,
+    def update_node(self, node, labels=None, parameters=None, cover_lables=False,
                     cover_parameters=False, add_uid=False):
         """update_node方法用于
 
@@ -91,6 +91,8 @@ class Pyneo4j:
         """
         if parameters is None:
             parameters = {}
+        if parameters is None:
+            parameters = {}
         if cover_parameters:
             for key in node.keys():
                 del node[key]
@@ -107,14 +109,14 @@ class Pyneo4j:
         self.driver.push(node)
         return node
 
-    def del_node(self, node=None, labels=None, id=None, uid=None):
+    def del_node(self, node=None, labels=None, identify=None, uid=None):
         """del_node方法用于删除节点
 
         Parameters
         ----------
         node: py2neo.data.Node
             节点对象
-        id: int or None
+        identify: int or None
             节点id
         uid: int or None
             节点uid
@@ -130,14 +132,14 @@ class Pyneo4j:
             labels = ':'.join(labels)
             cyper = f'Match (p:{labels}) Delete p;'
             self.driver.run(cyper)
-        elif id:
-            cyper = f'Match (p) Where id(p)={id} Delete p;'
+        elif identify:
+            cyper = f'Match (p) Where id(p)={identify} Delete p;'
             self.driver.run(cyper)
         elif uid:
             cycler = f'Match (p) where p.uid={uid} Delete p;'
             self.driver.run(cycler)
 
-    def create_relationship(self, node1, node2, label='', parameters={}, add_uid=False):
+    def create_relationship(self, node1, node2, label='', parameters=None, add_uid=False):
         """create_relationship方法用于
 
         Parameters
@@ -156,6 +158,8 @@ class Pyneo4j:
         Returns
         ----------
         """
+        if parameters is None:
+            parameters = {}
         relation = Relationship(node1, label, node2, **parameters)
         self.driver.create(relation)
         if add_uid:
@@ -211,8 +215,8 @@ class Pyneo4j:
         Returns
         ----------
         """
-        cyper = f'match (p) where id(p)={uid} return p limit 1'
-        node = self.driver.evaluate(cyper)
+        cypher = f'match (p) where id(p)={uid} return p limit 1'
+        node = self.driver.evaluate(cypher)
         return node
 
     def delete_relationship(self, label1=[], parameters1={}, r_label=None,

@@ -41,6 +41,8 @@ def post(url, data, headers=None, decode='utf-8'):
 
     Parameters
     ----------
+    url: str
+        请求地址
     data: dict
         post数据
     headers: dict or None

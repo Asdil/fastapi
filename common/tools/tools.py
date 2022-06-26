@@ -391,7 +391,7 @@ def parallel(args, func, njobs, backend=0, verbose=1):
     """parallel方法用于并行计算
     Parameters
     ----------
-    args : list
+    args : list or generator
         参数列表
     func : funcion
         对象函数

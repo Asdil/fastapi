@@ -19,7 +19,7 @@ DEBUG: bool = True
 TITLE: str = "FastAPI项目文档"
 DESCRIPTION: str = "这是一个FastAPI标准模板"
 
-ADD_SCHEDULER = True  # 是否添加api.scheduler定时任务模块
+ADD_SCHEDULER: bool = True  # 是否添加api.scheduler定时任务模块
 
 
 

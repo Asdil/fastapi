@@ -13,4 +13,4 @@
 __author__ = 'Asdil'
 from core import conf
 from common import sqlite3_db
-sqlite3_db.excute(conf.SQL_LITE1)
+sqlite3_db.excute(conf.SQL_LITE6)

@@ -19,4 +19,4 @@ app = create_app()
 if __name__ == '__main__':
     uvicorn.run('main:app', host='127.0.0.1', port=8100, workers=1)
 
-# gunicorn main:app -b 0.0.0.0:8100 -w 2 -k uvicorn.workers.UvicornWorker --reload
+# python recover.py && gunicorn main:app -b 0.0.0.0:8100 -w 4 -k uvicorn.workers.UvicornWorker --reload

@@ -28,11 +28,17 @@ scheduler_router = APIRouter()
 Schedule = None
 
 
-# @scheduler_router.on_event("startup")
-# async def set_schedule_avaliable():
-#     """配合load_schedule_or_create_blank使用, 初始化start_up表可用"""
-#     sleep = random.uniform(0, 1)
-#     await asyncio.sleep(sleep)
+@scheduler_router.on_event("startup")
+async def monitor_kafka():
+    """monitor_kafka用于kafka监听程序"""
+
+    pid = tools.get_pid()
+    sqlite3_db.excute(conf.SQL_LITE2, (pid, 2))
+    _pid = sqlite3_db.select_one(conf.SQL_LITE3, (2,))[0]
+    if pid != _pid:
+        return
+    logger.info(f'kafka监听程序启动!')
+    return
 
 
 @scheduler_router.on_event("startup")
@@ -43,8 +49,8 @@ async def load_schedule_or_create_blank():
     # sleep = random.uniform(0, 1)
     # await asyncio.sleep(sleep)
     pid = tools.get_pid()
-    sqlite3_db.excute(conf.SQL_LITE2, (pid,))
-    _pid = sqlite3_db.select_one(conf.SQL_LITE3)[0]
+    sqlite3_db.excute(conf.SQL_LITE2, (pid, 1))
+    _pid = sqlite3_db.select_one(conf.SQL_LITE3, (1, ))[0]
     if pid != _pid:
         return
     logger.info(f'定时任务加载成功!')

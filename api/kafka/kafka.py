@@ -21,7 +21,6 @@ __author__ = 'Asdil'
 # async def main():
 #     """monitor方法用于监听kafka消息执行操作
 #     """
-#     print('ok')
 #     logger.info('master kafka初始化...')
 #     # kafka监听
 #     consumer = AIOKafkaConsumer(conf.KAFKA_TOPIC,

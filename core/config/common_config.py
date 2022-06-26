@@ -23,8 +23,9 @@ ALGORITHM = "HS256"     # 算法
 ACCESS_TOKEN_EXPIRE_MINUTES = 30    # 访问令牌过期分钟
 
 # SQLITE3 初始化定时任务使用的配置
-SQL_LITE1 = 'UPDATE start_up SET pid=-1 WHERE id=1 AND pid!=-1;'
-SQL_LITE2 = 'UPDATE start_up SET pid=? WHERE id=1 AND pid=-1;'
-SQL_LITE3 = 'SELECT pid FROM start_up WHERE id=1;'
+SQL_LITE1 = 'UPDATE start_up SET pid=-1 WHERE id=? AND pid!=-1;'  # 用于控制防止多线程启动多次
+SQL_LITE2 = 'UPDATE start_up SET pid=? WHERE id=? AND pid=-1;'
+SQL_LITE3 = 'SELECT pid FROM start_up WHERE id=?;'
 SQL_LITE4 = 'SELECT password FROM jwt WHERE user=?'
 SQL_LITE5 = 'SELECT user FROM jwt WHERE user=?'
+SQL_LITE6 = 'UPDATE start_up SET pid=-1 WHERE pid!=-1;'

@@ -41,11 +41,10 @@ def create_app() -> FastAPI:
     swagger_css_url: str="/static/swagger-ui/swagger-ui.css",
     swagger_favicon_url: str="/static/swagger-ui/favicon.png",
     
-    edoc_js_url: str = "/static/redoc/bundles/redoc.standalone.js",
+    redoc_js_url: str = "/static/redoc/bundles/redoc.standalone.js",
     redoc_favicon_url: str = "/static/redoc/favicon.png",
     打开http://127.0.0.1:端口/docs就可以成功加载
     '''
-
 
     # 其余的一些全局配置可以写在这里 多了可以考虑拆分到其他文件夹
 

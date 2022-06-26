@@ -87,4 +87,5 @@ async def pickle_schedule():
     """
     global Schedule
     Schedule.shutdown()
+    sqlite3_db.excute(conf.SQL_LITE1)
     logger.info("关闭定时任务模块！")

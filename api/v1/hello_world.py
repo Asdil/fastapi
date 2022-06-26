@@ -31,5 +31,3 @@ def pipeline_v1(args, host):
     """
     data = args.data
     return response_code.resp_200(data=data)
-
-

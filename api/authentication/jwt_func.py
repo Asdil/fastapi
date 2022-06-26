@@ -115,7 +115,7 @@ async def verify_token(token: str = Depends(oauth2_scheme)):
 
     Parameters
     ----------
-    token : str、
+    token : str
         token字符串
 
     Returns

@@ -24,7 +24,7 @@ sub_router = APIRouter()
 
 
 @sub_router.post("/hello_world", summary="简单的函数调用", description='简单的函数调用')
-async def port_hello_world(args: args.Args1, request: Request): # token: bool = Depends(verify_token) 如果要加token
+async def port_hello_world(args: args.Args1, request: Request, token: bool = Depends(verify_token)): # token: bool = Depends(verify_token) 如果要加token
     client_host = f"{request.client.host}:{request.client.port}"   # 请求地址 port:host
     logger.info(f'host:{client_host} 请求: args{args}')
     ret = pipeline_v1(args, client_host)

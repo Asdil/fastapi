@@ -15,7 +15,9 @@ import os
 import ast
 import math
 import base64
+import joblib
 import datetime
+from tqdm import tqdm
 from dateutil.parser import parse
 
 
@@ -219,7 +221,7 @@ def diff_set(l1, l2):
     return list(set(l1).difference(set(l2)))
 
 
-def union_set(l1,l2):
+def union_set(l1, l2):
     """union_set方法用于列表并集
 
     Parameters
@@ -264,7 +266,7 @@ def datetime_to_str(date, milliseconds=False):
 
     Parameters
     ----------
-    date : datetime
+    date : datetime.datetime
         日期
     milliseconds: bool
         是否保留毫秒
@@ -383,3 +385,37 @@ def get_pid():
     """get_pid方法用于当前进程id
     """
     return os.getpid()
+
+
+def parallel(args, func, njobs, backend=0, verbose=1):
+    """parallel方法用于并行计算
+    Parameters
+    ----------
+    args : list
+        参数列表
+    func : funcion
+        对象函数
+    njobs : int
+        并行数
+    backend : int
+        并行任务种类
+        0: loky 默认
+        1: multiprocessing 多进程，鲁棒性不如loky
+        2: threading 多线程, 当释放GIL效率高
+    verbose : int
+        是否输出进度条
+    Returns
+    ----------
+    """
+    # 并行种类
+    backend_dict = {0: 'loky', 1: 'multiprocessing', 2: 'threading'}
+    backend = backend_dict[backend]
+    if verbose == 0:
+        ret = joblib.Parallel(
+            n_jobs=njobs, backend=backend, verbose=0)(
+            joblib.delayed(func)(arg) for arg in args)
+    else:
+        ret = joblib.Parallel(
+            n_jobs=njobs, backend=backend, verbose=0)(
+            joblib.delayed(func)(arg) for arg in tqdm(args))
+    return ret

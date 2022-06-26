@@ -11,6 +11,6 @@
 -------------------------------------------------
 """
 __author__ = 'Asdil'
+from core import conf
 from common import sqlite3_db
-SQL_LITE1 = 'UPDATE start_up SET pid=-1 WHERE id=1 AND pid!=-1;'
-sqlite3_db.excute(SQL_LITE1)
+sqlite3_db.excute(conf.SQL_LITE1)

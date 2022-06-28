@@ -17,8 +17,10 @@ import math
 import base64
 import joblib
 import datetime
+import collections
 from tqdm import tqdm
 from dateutil.parser import parse
+
 
 
 def split_list(data, slice):
@@ -419,3 +421,24 @@ def parallel(args, func, njobs, backend=0, verbose=1):
             n_jobs=njobs, backend=backend, verbose=0)(
             joblib.delayed(func)(arg) for arg in tqdm(args))
     return ret
+
+
+def sort_dict(_dict, reverse=False):
+    """sort_dict方法用于
+
+    Parameters
+    ----------
+    _dict : dict
+        字典
+    reverse : bool
+        是否倒排
+    Returns
+    ----------
+    order_dict : dict
+        字典
+    """
+    order_dict = collections.OrderedDict(sorted(_dict.items()))
+    if reverse:
+        order_dict = order_dict[::-1]
+    order_dict = dict(order_dict)
+    return order_dict

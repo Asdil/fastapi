@@ -424,7 +424,7 @@ def parallel(args, func, njobs, backend=0, verbose=1):
 
 
 def sort_dict(_dict, reverse=False):
-    """sort_dict方法用于
+    """sort_dict方法用于排序字典
 
     Parameters
     ----------

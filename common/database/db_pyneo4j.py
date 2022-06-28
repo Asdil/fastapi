@@ -218,6 +218,7 @@ class Py2neo4j:
         ----------
         """
         if id:
+            id = int(id)
             uid = id
             cypher = f'match (p) where id(p)=$uid return p limit 1'
         else:

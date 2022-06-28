@@ -204,19 +204,25 @@ class Py2neo4j:
         ret = self.driver.evaluate(cyper, parameters)
         return ret
 
-    def get_by_id(self, uid):
+    def get_by_id(self, uid=None, id=None):
         """get_id方法用于用于根据id查找
 
         Parameters
         ----------
-        uid : int
-            节点自身的id
+        uid : str or int
+            节点自身的uid
+        id : int
+            节点的id
 
         Returns
         ----------
         """
-        cypher = f'match (p) where id(p)={uid} return p limit 1'
-        node = self.driver.evaluate(cypher)
+        if id:
+            uid = id
+            cypher = f'match (p) where id(p)=$uid return p limit 1'
+        else:
+            cypher = f'match (p) where p.uid=$uid return p limit 1'
+        node = self.driver.evaluate(cypher, {'uid': uid})
         return node
 
     def delete_relationship(self, label1=[], parameters1={}, r_label=None,

@@ -16,6 +16,8 @@ import os
 BASE_PATH: str = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 TEMP_DB: str = os.path.join(BASE_PATH, 'local_db/sqlite3.db')
 
+ADD_SCHEDULER: bool = True  # 是否添加api.scheduler定时任务模块
+
 # jwt 秘钥
 # 生成新的秘钥需执行下面命令: openssl rand -hex 32
 SECRET_KEY: str = "1bc1934d8c3404ea0276472a329dcc490aedc87ca4a93361b61f8e31d5d47dc0"

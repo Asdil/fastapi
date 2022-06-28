@@ -58,7 +58,7 @@ hello_world(args, client_host)  表示调用hello_world函数
 ```
 
 ### 1.2 定时任务
-   加载定时任务需  项目文件夹->core->development_config.py/production_config.py->ADD_SCHEDULER = True
+   加载定时任务需  项目文件夹->core->common_config.py->ADD_SCHEDULER = True
 
 - #### 1.2.1 编写定时任务函数
 

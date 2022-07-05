@@ -31,3 +31,10 @@ def pipeline_v1(args, host):
     """
     data = args.data
     return response_code.resp_200(data=data)
+
+
+def schedule_task():
+    """schedule_task方法用于测试定时任务
+    """
+    print('ok')
+    return 0

@@ -18,3 +18,4 @@ from .logger import logger
 from .database.db_sqlit3 import Sqlit3
 
 sqlite3_db = Sqlit3()
+# 需要注意, neo4j在连接十分钟时候会自动断开

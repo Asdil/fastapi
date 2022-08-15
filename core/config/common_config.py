@@ -31,3 +31,5 @@ SQL_LITE3: str = 'SELECT pid FROM start_up WHERE id=?;'
 SQL_LITE4: str = 'SELECT password FROM jwt WHERE user=?'
 SQL_LITE5: str = 'SELECT user FROM jwt WHERE user=?'
 SQL_LITE6: str = 'UPDATE start_up SET pid=-1 WHERE pid!=-1;'
+
+# mock 参数

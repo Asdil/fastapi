@@ -19,6 +19,6 @@ app = create_app()
 
 if __name__ == '__main__':
     subprocess.check_call('python recover.py', shell=True)
-    uvicorn.run('main:app', host='0.0.0.0', port=8100, workers=8)
+    uvicorn.run('main:app', host='0.0.0.0', port=8100, workers=1)
 
 # python recover.py && gunicorn main:app -b 0.0.0.0:8100 -w 4 -k uvicorn.workers.UvicornWorker --reload
